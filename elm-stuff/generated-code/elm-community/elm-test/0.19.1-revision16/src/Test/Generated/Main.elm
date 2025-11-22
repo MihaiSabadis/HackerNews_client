@@ -21,23 +21,23 @@ main : Test.Runner.Node.TestProgram
 main =
     Test.Runner.Node.run
         { runs = 100
-        , report = ConsoleReport Monochrome
+        , report = JsonReport
         , seed = 376158560164992
-        , processes = 4
+        , processes = 20
         , globs =
             []
         , paths =
-            [ "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/ExampleTests/CursorTests.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/ExampleTests/ModelPostIdsTests.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/ExampleTests/ModelPostsConfigTests.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/ExampleTests/UtilTimeTests.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/MainTests.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/PostTests.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/PostsConfigTests.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/PostsViewTests.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/SimulatedEffect.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/TestData.elm"
-            , "/home/mihai/facultate/FP/ElmProject/Elm-Project/tests/TestUtils.elm"
+            [ "/home/sabad/ElmProject/HackerNews_client/tests/ExampleTests/CursorTests.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/ExampleTests/ModelPostIdsTests.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/ExampleTests/ModelPostsConfigTests.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/ExampleTests/UtilTimeTests.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/MainTests.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/PostTests.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/PostsConfigTests.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/PostsViewTests.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/SimulatedEffect.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/TestData.elm"
+            , "/home/sabad/ElmProject/HackerNews_client/tests/TestUtils.elm"
             ]
         }
         [ ( "ExampleTests.CursorTests"

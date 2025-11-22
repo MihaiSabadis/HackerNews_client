@@ -37,7 +37,7 @@ nonEmpty x xs =
 fromList : List a -> Maybe (Cursor a)
 fromList list =
     case list of
-        x :: xs -> Just (withSelectedElement [] x xs)
+        x :: xs -> Just (nonEmpty x xs)
         [] -> Nothing
      --Nothing
     -- Debug.todo "fromList"
@@ -60,14 +60,13 @@ toList cursor =
 
 {-| Get the current element from the cursor
 
-    current (nonEmpty 1 [ 2, 3 ]) {- ignore -} --> 1
+    current (nonEmpty 1 [ 2, 3 ]) (ignore) --> 1
 
-    current (withSelectedElement [ 1, 2 ] 3 [ 4, 5 ]) {- ignore -} --> 3
-
+    current (withSelectedElement [ 1, 2 ] 3 [ 4, 5 ]) (ignore) --> 3
 -}
+
 current : Cursor a -> a
-current (Cursor _ a _) =
-    a
+current (Cursor _ a _) = a
 
 
 {-| Move the cursor forward.
@@ -91,7 +90,6 @@ forward cursor =
         case right of
             next :: rest -> Just (Cursor (mid ::left) next rest)
             [] -> Nothing
-     Nothing
     -- Debug.todo "forward"
 
 
@@ -107,8 +105,13 @@ If the cursor would go before the first element, the function should return `Not
 
 -}
 back : Cursor a -> Maybe (Cursor a)
-back _ =
-     Nothing
+back cursor =
+     let
+        (Cursor left mid right) = cursor
+    in
+        case left of
+            prev :: rest -> Just (Cursor rest prev (mid :: right))
+            [] -> Nothing
     -- Debug.todo "back"
 
 
@@ -120,6 +123,9 @@ back _ =
 
 -}
 length : Cursor a -> Int
-length _ =
-     0
+length cursor =
+     let
+        (Cursor left _ right) = cursor
+    in
+        List.length left + 1 + List.length right
     -- Debug.todo "length"

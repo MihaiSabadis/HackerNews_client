@@ -1,0 +1,81 @@
+-- NAMING ERROR ---- /home/sabad/ElmProject/HackerNews_client/src/View/Posts.elm
+
+I cannot find a `ChangeNumPosts` variant:
+
+82|         [ select [ id "select-posts-per-page", onInput (\str -> String.toInt str |> Maybe.map ChangeNumPosts |> Maybe.withDefault (ChangeNumPosts config.postsToShow) |> ConfigChanged) ]
+                                                                                                  ^^^^^^^^^^^^^^
+These names seem close though:
+
+    ChangeTODO
+    GotPost
+    Maybe.Just
+    Model.GotPost
+
+Hint: Read <https://elm-lang.org/0.19.1/imports> to see how `import`
+declarations work in Elm.
+
+-- NAMING ERROR ---- /home/sabad/ElmProject/HackerNews_client/src/View/Posts.elm
+
+I cannot find a `ChangeNumPosts` variant:
+
+82|         [ select [ id "select-posts-per-page", onInput (\str -> String.toInt str |> Maybe.map ChangeNumPosts |> Maybe.withDefault (ChangeNumPosts config.postsToShow) |> ConfigChanged) ]
+                                                                                                                                       ^^^^^^^^^^^^^^
+These names seem close though:
+
+    ChangeTODO
+    GotPost
+    Maybe.Just
+    Model.GotPost
+
+Hint: Read <https://elm-lang.org/0.19.1/imports> to see how `import`
+declarations work in Elm.
+
+-- NAMING ERROR ---- /home/sabad/ElmProject/HackerNews_client/src/View/Posts.elm
+
+I cannot find a `ChangeSortBy` variant:
+
+87|         , select [ id "select-sort-by", onInput (ChangeSortBy >> ConfigChanged) ]
+                                                     ^^^^^^^^^^^^
+These names seem close though:
+
+    ChangeTODO
+    Basics.GT
+    Basics.LT
+    Basics.True
+
+Hint: Read <https://elm-lang.org/0.19.1/imports> to see how `import`
+declarations work in Elm.
+
+-- NAMING ERROR ---- /home/sabad/ElmProject/HackerNews_client/src/View/Posts.elm
+
+I cannot find a `ChangeShowJobs` variant:
+
+94|             [ input [ type_ "checkbox", id "checkbox-show-job-posts", checked config.showJobs, onCheck (ChangeShowJobs >> ConfigChanged) ] []
+                                                                                                            ^^^^^^^^^^^^^^
+These names seem close though:
+
+    ChangeTODO
+    Maybe.Just
+    Maybe.Nothing
+    Result.Ok
+
+Hint: Read <https://elm-lang.org/0.19.1/imports> to see how `import`
+declarations work in Elm.
+
+-- NAMING ERROR ---- /home/sabad/ElmProject/HackerNews_client/src/View/Posts.elm
+
+I cannot find a `ChangeShowTextOnlyPosts` variant:
+
+98|             [ input [ type_ "checkbox", id "checkbox-show-text-only-posts", checked config.showTextOnly, onCheck (ChangeShowTextOnlyPosts >> ConfigChanged) ] []
+                                                                                                                      ^^^^^^^^^^^^^^^^^^^^^^^
+These names seem close though:
+
+    ChangeTODO
+    Model.LoadedPosts
+    Model.LoadingPosts
+    GotPost
+
+Hint: Read <https://elm-lang.org/0.19.1/imports> to see how `import`
+declarations work in Elm.
+
+`elm make` failed with exit code 1.

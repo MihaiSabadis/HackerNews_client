@@ -2,6 +2,7 @@ module Model.PostIds exposing (..)
 
 import Cursor exposing (Cursor)
 import Json.Decode as De
+import Model.Post exposing (Post)
 
 
 type HackerNewsItem
@@ -59,9 +60,11 @@ If the `Cursor` is focused on the last element, it returns `Nothing`
 
 -}
 advance : PostIds -> Maybe ( Int, PostIds )
-advance _ =
-    -- Nothing
-    Debug.todo "advance"
+advance (PostIds cursor) =
+    case Cursor.forward cursor of
+        Just newCursor -> Just (Cursor.current newCursor, PostIds newCursor)
+        Nothing -> Nothing
+    --Debug.todo "advance"
 
 
 {-| Returns the first post id
@@ -93,5 +96,14 @@ If the list is empty, the function returns `Nothing`.
 -}
 decode : De.Decoder (Maybe PostIds)
 decode =
-     De.fail "TODO"
+    De.list De.int
+        |> De.andThen
+           (\ids ->
+                case ids of
+                    [] ->
+                        De.succeed Nothing
+                    x::xs ->
+                        De.succeed (Just (PostIds (Cursor.nonEmpty x xs)))
+           )
+    --De.fail "TODO"
     --Debug.todo "PostIds.decode"

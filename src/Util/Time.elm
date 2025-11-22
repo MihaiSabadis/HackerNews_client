@@ -139,8 +139,27 @@ durationBetween (Time.millisToPosix 1000) (Time.millisToPosix 1000) --> Nothing
 
 -}
 durationBetween : Time.Posix -> Time.Posix -> Maybe Duration
-durationBetween _ _ =
-     Nothing
+durationBetween t1 t2 =
+    let
+        millis1 = Time.posixToMillis t1
+        millis2 = Time.posixToMillis t2
+        diff = millis2 - millis1
+    in
+    if diff <= 0 then
+        Nothing
+    else
+        let
+            seconds = diff // 1000
+            minutes = seconds // 60
+            hours = minutes // 60
+            days = hours // 24
+        in
+        Just
+            { seconds = Basics.remainderBy 60 seconds
+            , minutes = Basics.remainderBy 60 minutes
+            , hours = Basics.remainderBy 24 hours
+            , days = days
+            }
     --Debug.todo "durationBetween"
 
 
@@ -164,6 +183,24 @@ durationBetween _ _ =
 
 -}
 formatDuration : Duration -> String
-formatDuration _ =
-     ""
+formatDuration dur =
+    let
+        parts =
+            [ ( dur.days, "day" )
+            , ( dur.hours, "hour" )
+            , ( dur.minutes, "minute" )
+            , ( dur.seconds, "second" )
+            ]
+
+        nonZeroParts =
+            List.filter (\( value, _ ) -> value > 0) parts
+
+        formatPart ( value, label ) =
+            String.fromInt value ++ " " ++ label ++ (if value == 1 then "" else "s")
+
+        formattedParts =
+            List.map formatPart nonZeroParts
+
+    in
+    String.join " " formattedParts ++ " ago"
     --Debug.todo "formatDuration"

@@ -3,6 +3,7 @@ module Model.PostsConfig exposing (Change(..), PostsConfig, SortBy(..), applyCha
 import Html.Attributes exposing (scope)
 import Model.Post exposing (Post)
 import Time
+import List exposing (sort)
 
 
 type SortBy
@@ -43,8 +44,22 @@ sortToString sort =
 
 -}
 sortFromString : String -> Maybe SortBy
-sortFromString _ =
-     Nothing
+sortFromString str =
+    case str of
+        "Score" ->
+            Just Score
+
+        "Title" ->
+            Just Title
+
+        "Posted" ->
+            Just Posted
+
+        "None" ->
+            Just None
+
+        _ ->
+            Nothing
     --Debug.todo "sortFromString"
 
 
@@ -81,14 +96,24 @@ defaultConfig =
 {-| A type that describes what option changed and how
 -}
 type Change
-    = ChangeTODO
+    = ChangeNumPosts Int
+    | ChangeSortBy String
+    | ChangeShowJobs Bool
+    | ChangeShowTextOnly Bool
 
 
 {-| Given a change and the current configuration, return a new configuration with the changes applied
 -}
 applyChanges : Change -> PostsConfig -> PostsConfig
-applyChanges _ _ =
-    Debug.todo "applyChanges"
+applyChanges change config =
+    case change of
+        ChangeNumPosts num -> { config | postsToShow = num }
+        ChangeSortBy sortByString ->
+            { config | sortBy = sortFromString sortByString |> Maybe.withDefault None  }
+        ChangeShowJobs showJobs -> { config | showJobs = showJobs }
+        ChangeShowTextOnly showTextOnly -> { config | showTextOnly = showTextOnly }
+
+    --Debug.todo "applyChanges"
 
 
 {-| Given the configuration and a list of posts, return the relevant subset of posts according to the configuration
@@ -103,6 +128,14 @@ Relevant library functions:
 
 -}
 filterPosts : PostsConfig -> List Post -> List Post
-filterPosts _ _ =
-     []
+filterPosts config posts =
+    -- using pipelines to filter for each parameter
+    posts
+    |> List.filter (\post -> config.showTextOnly || (post.url /= Nothing && post.title /= ""))
+    |> List.filter (\post -> config.showJobs || String.toLower post.type_ /= "job")
+    
+    -- sort, then take to get the most relevant posts --
+    |> List.sortWith (sortToCompareFn config.sortBy)
+    |> List.take config.postsToShow
+    
     --Debug.todo "filterPosts"

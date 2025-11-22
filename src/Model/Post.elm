@@ -34,5 +34,15 @@ Relevant library functions:
 -}
 decode : De.Decoder Post
 decode =
-     De.fail "TODO"
+    De.map7 Post
+        (De.field "by" De.string)
+        (De.field "id" De.int)
+        (De.field "score" De.int)
+        (De.field "title" De.string)
+        (De.maybe (De.field "url" De.string))
+        (De.field "time" De.int
+            |> De.map (\secs -> Time.millisToPosix (secs * 1000))
+        )
+        (De.field "type" De.string)
+     --De.fail "TODO"
     --Debug.todo "Post.decode"
