@@ -4355,7 +4355,10 @@ var $elm$core$Set$toList = function (_v0) {
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
-var $author$project$Test$Reporter$Reporter$JsonReport = {$: 'JsonReport'};
+var $author$project$Test$Reporter$Reporter$ConsoleReport = function (a) {
+	return {$: 'ConsoleReport', a: a};
+};
+var $author$project$Console$Text$Monochrome = {$: 'Monochrome'};
 var $elm$core$Maybe$Just = function (a) {
 	return {$: 'Just', a: a};
 };
@@ -8671,23 +8674,31 @@ var $elm$core$List$sortWith = _List_sortWith;
 var $elm$core$String$toLower = _String_toLower;
 var $author$project$Model$PostsConfig$filterPosts = F2(
 	function (config, posts) {
-		return A2(
-			$elm$core$List$take,
-			config.postsToShow,
+		var filtered = A2(
+			$elm$core$List$filter,
+			function (post) {
+				return config.showJobs || ($elm$core$String$toLower(post.type_) !== 'job');
+			},
 			A2(
-				$elm$core$List$sortWith,
-				$author$project$Model$PostsConfig$sortToCompareFn(config.sortBy),
-				A2(
-					$elm$core$List$filter,
-					function (post) {
-						return config.showJobs || ($elm$core$String$toLower(post.type_) !== 'job');
-					},
-					A2(
-						$elm$core$List$filter,
-						function (post) {
-							return config.showTextOnly || ((!_Utils_eq(post.url, $elm$core$Maybe$Nothing)) && (post.title !== ''));
-						},
-						posts))));
+				$elm$core$List$filter,
+				function (post) {
+					return config.showTextOnly || (!_Utils_eq(post.url, $elm$core$Maybe$Nothing));
+				},
+				posts));
+		var limited = A2($elm$core$List$take, config.postsToShow, filtered);
+		var sorted = function () {
+			var _v0 = config.sortBy;
+			if (_v0.$ === 'None') {
+				return limited;
+			} else {
+				var sort = _v0;
+				return A2(
+					$elm$core$List$sortWith,
+					$author$project$Model$PostsConfig$sortToCompareFn(sort),
+					limited);
+			}
+		}();
+		return sorted;
 	});
 var $elm$html$Html$a = _VirtualDom_node('a');
 var $elm$html$Html$Attributes$stringProperty = F2(
@@ -25103,7 +25114,7 @@ var $author$project$Test$Generated$Main$main = A2(
 		paths: _List_fromArray(
 			['/home/sabad/ElmProject/HackerNews_client/tests/ExampleTests/CursorTests.elm', '/home/sabad/ElmProject/HackerNews_client/tests/ExampleTests/ModelPostIdsTests.elm', '/home/sabad/ElmProject/HackerNews_client/tests/ExampleTests/ModelPostsConfigTests.elm', '/home/sabad/ElmProject/HackerNews_client/tests/ExampleTests/UtilTimeTests.elm', '/home/sabad/ElmProject/HackerNews_client/tests/MainTests.elm', '/home/sabad/ElmProject/HackerNews_client/tests/PostTests.elm', '/home/sabad/ElmProject/HackerNews_client/tests/PostsConfigTests.elm', '/home/sabad/ElmProject/HackerNews_client/tests/PostsViewTests.elm', '/home/sabad/ElmProject/HackerNews_client/tests/SimulatedEffect.elm', '/home/sabad/ElmProject/HackerNews_client/tests/TestData.elm', '/home/sabad/ElmProject/HackerNews_client/tests/TestUtils.elm']),
 		processes: 20,
-		report: $author$project$Test$Reporter$Reporter$JsonReport,
+		report: $author$project$Test$Reporter$Reporter$ConsoleReport($author$project$Console$Text$Monochrome),
 		runs: 100,
 		seed: 376158560164992
 	},
@@ -25187,7 +25198,7 @@ var $author$project$Test$Generated$Main$main = A2(
 _Platform_export({'Test':{'Generated':{'Main':{'init':$author$project$Test$Generated$Main$main($elm$json$Json$Decode$int)(0)}}}});}(this));
 return this.Elm;
 })({});
-var pipeFilename = "/tmp/elm_test-22054.sock";
+var pipeFilename = "/tmp/elm_test-32964.sock";
 var net = require('net'),
   client = net.createConnection(pipeFilename);
 

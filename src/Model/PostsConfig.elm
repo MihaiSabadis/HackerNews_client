@@ -1,6 +1,6 @@
 module Model.PostsConfig exposing (Change(..), PostsConfig, SortBy(..), applyChanges, defaultConfig, filterPosts, sortFromString, sortOptions, sortToCompareFn, sortToString)
 
-import Html.Attributes exposing (scope)
+-- Removed unused Html.Attributes import
 import Model.Post exposing (Post)
 import Time
 import List exposing (sort)
@@ -129,13 +129,22 @@ Relevant library functions:
 -}
 filterPosts : PostsConfig -> List Post -> List Post
 filterPosts config posts =
-    -- using pipelines to filter for each parameter
-    posts
-    |> List.filter (\post -> config.showTextOnly || (post.url /= Nothing && post.title /= ""))
-    |> List.filter (\post -> config.showJobs || String.toLower post.type_ /= "job")
-    
-    -- sort, then take to get the most relevant posts --
-    |> List.sortWith (sortToCompareFn config.sortBy)
-    |> List.take config.postsToShow
-    
-    --Debug.todo "filterPosts"
+    let
+        -- 1. Apply filters (text-only and jobs). When showTextOnly is False, exclude posts without a URL.
+        filtered =
+            posts
+                |> List.filter (\post -> config.showTextOnly || post.url /= Nothing)
+                |> List.filter (\post -> config.showJobs || String.toLower post.type_ /= "job")
+
+        limited =
+            filtered |> List.take config.postsToShow
+
+        sorted =
+            case config.sortBy of
+                None ->
+                    limited
+
+                sort ->
+                    limited |> List.sortWith (sortToCompareFn sort)
+    in
+    sorted
